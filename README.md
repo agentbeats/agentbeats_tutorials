@@ -26,6 +26,12 @@ Just to mention, in [agentbeats](agentbeats.org), both prompts (defense / attack
 
 ## Stage I: Setting up a Minimal Red Agent
 
+First, clone our example repo:
+
+```bash
+git clone https://github.com/agentbeats/agentbeats_tutorials
+```
+
 ### 1). Agent Server Deployment
 
 #### 1. Log into Server (TODO: update this part)
