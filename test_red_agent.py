@@ -119,12 +119,26 @@ class RedAgentTester:
 
         return response
 
-    async def test_red_agent(self, agent_url: str):
+    async def test_red_agent(self, launcher_url: str, agent_url: str):
         print(f"Testing Red Agent at: {agent_url}")
         print("=" * 60)
 
-        # Step 1: Get agent card
-        print("Step 1: Getting agent card...")
+        # Step 1: Get Launcher server status
+        print("Step 1: Checking launcher server status...")
+        try:
+            await self._ensure_httpx_client()
+            response = await self.httpx_client.get(f"{launcher_url}/status")
+            if response.status_code == 200 and response.json().get("status") == "server up, with agent running":
+                print("✅ Launcher server is running.")
+            else:
+                print(f"❌ Launcher server returned status code: {response.status_code}, response: {response.json()}")
+                return
+        except httpx.RequestError as e:
+            print(f"❌ Error connecting to launcher server: {str(e)}")
+            return
+
+        # Step 2: Get agent card
+        print("Step 2: Getting agent card...")
         agent_card = await self.get_agent_card(agent_url)
 
         if agent_card:
@@ -136,14 +150,18 @@ class RedAgentTester:
 
         print("\n" + "=" * 60)
 
-        # Step 2: Request attack prompt
-        print("Step 2: Requesting attack prompt...")
+        # Step 3: Request attack prompt
+        print("Step 3: Requesting attack prompt...")
         injection_prompt = await self.request_attack_prompt(agent_url)
 
         print("\n" + "=" * 60)
         print("Test completed successfully!")
 
-        return {"agent_card": agent_card, "injection_prompt": injection_prompt}
+        return {
+            "server_status": "Launcher server is running",
+            "agent_card": agent_card, 
+            "injection_prompt": injection_prompt
+        }
 
     async def close(self):
         """Close the httpx client."""
@@ -151,7 +169,7 @@ class RedAgentTester:
             await self.httpx_client.aclose()
 
 
-async def main(agent_url: str):
+async def main(launcher_url: str, agent_url: str):
     """
     Main function to run the red agent test.
     Modify the AGENT_URL to point to your deployed red agent.
@@ -160,13 +178,13 @@ async def main(agent_url: str):
     tester = RedAgentTester()
 
     try:
-        result = await tester.test_red_agent(agent_url)
+        result = await tester.test_red_agent(launcher_url, agent_url)
 
         if result:
             print("\n" + "=" * 60)
             print("SUMMARY:")
-            print(f"Agent URL: {agent_url}")
-            print(f"Agent Card Retrieved: {'✅' if result['agent_card'] else '❌'}")
+            print(f"Launcher URL: {launcher_url} alive: {'✅' if result['server_status'] == 'Launcher server is running' else '❌'}")
+            print(f"Agent Card Retrieved from {agent_url}: {'✅' if result['agent_card'] else '❌'}")
             if result['injection_prompt'] and not result['injection_prompt'].startswith("Error") and not result['injection_prompt'].startswith("No response"):
                 print("Injection Prompt Retrieved: ✅")
                 print(f"Prompt: {result['injection_prompt']}")
@@ -184,14 +202,18 @@ async def main(agent_url: str):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
+        "--launcher_url", type=str, required=True, help="The URL of the launcher to test"
+    )
+    parser.add_argument(
         "--agent_url", type=str, required=True, help="The URL of the red agent to test"
     )
     args = parser.parse_args()
     print("Red Agent Tester for TensorTrust")
     print("=" * 60)
     print("This script will test a deployed red agent by:")
-    print("1. Retrieving its agent card")
-    print("2. Requesting an attack prompt via A2A")
+    print("1. Checking the launcher server status")
+    print("2. Retrieving the agent server's agent card")
+    print("3. Requesting the agent server an attack prompt via A2A")
     print("=" * 60)
 
-    asyncio.run(main(args.agent_url))
+    asyncio.run(main(args.launcher_url, args.agent_url))

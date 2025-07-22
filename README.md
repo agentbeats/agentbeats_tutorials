@@ -65,7 +65,6 @@ To host your agent, please fill in your LAUNCHER_PORT and AGENT_PORT here and ru
 # Use our key to use all-platform agents (anthropic, openai, ...)
 # Will deliver this key on the meeting/slack!
 export OPENROUTER_API_KEY=sk...
-export OPENROUTER_BASE_URL="https://openrouter.ai/api/v1"
 
 # Run your agent
 agentbeats run example_red_agent_card.toml \
@@ -85,14 +84,16 @@ agentbeats run example_red_agent_card.toml \
 Use `test_red_agent.py` to test if your agent is running correctly. Fill in your AGENT_PORT here.
 
 ```bash
-python test_red_agent.py --agent_url="http://localhost:<TODO: AGENT_PORT>"
+python test_red_agent.py --launcher_url="http://localhost:<TODO: LAUNCHER_PORT>" \
+                          --agent_url="http://localhost:<TODO: AGENT_PORT>"
 ```
 
 You should see this if your agent runs successfully locally:
 
 ```text
-Agent Card Retrieved: ✅
-Attack Prompt Generated: ✅
+Launcher URL: http://localhost:<TODO: LAUNCHER_PORT> alive: ✅
+Agent Card Retrieved from http://localhost:<TODO: AGENT_PORT>: ✅
+Injection Prompt Retrieved: ✅
 ```
 
 Now you are all set for your red agent server!
