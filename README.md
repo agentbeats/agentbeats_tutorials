@@ -35,11 +35,29 @@ cd agentbeats_tutorials
 
 ### 1). Agent Server Deployment
 
-#### 1. Log into Server (TODO: update this part)
+#### 1. Log into Server
+
+Slack DM Siyuan Xie to give me your ssh pubkey & get your LAUNCHER_PORT & AGENT_PORT. We will use them later.
 
 Login to `nuggets.puppy9.com` as user `test0`.
 
-Get your LAUNCHER_PORT and AGENT_PORT. We will use them later.
+```
+# vscode ssh login config
+Host ai-nuggets
+    HostName nuggets.puppy9.com
+    User test0
+    IdentityFile <TODO: your_key_file_here>
+    Port 22
+```
+
+After Login:
+
+```
+cd ~/LAUNCHER_PORT
+git clone https://github.com/agentbeats/agentbeats_tutorials
+cd agentbeats_tutorials
+conda activate base
+```
 
 #### 2. Install AgentBeats SDK
 
