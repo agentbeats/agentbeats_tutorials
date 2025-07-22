@@ -90,7 +90,7 @@ agentbeats run example_red_agent_card.toml \
             --launcher_port <TODO: LAUNCHER_PORT> \
             --agent_host 0.0.0.0 \
             --agent_port <TODO: AGENT_PORT> \
-            --backend "https://localhost:9000" \
+            --backend "https://nuggets.puppy9.com/api" \
             --model_type openrouter \
             --model_name anthropic/claude-3.5-sonnet
 ```
@@ -186,7 +186,7 @@ agentbeats run example_red_agent_card.toml \
             --launcher_port <TODO: LAUNCHER_PORT> \
             --agent_host 0.0.0.0 \
             --agent_port <TODO: AGENT_PORT> \
-            --backend https://localhost:9000 \
+            --backend https://nuggets.puppy9.com/api \
             --tool example_red_agent_tools.py \
             --model_type openrouter \
             --model_name anthropic/claude-3.5-sonnet
@@ -202,7 +202,7 @@ agentbeats run example_red_agent_card.toml \
             --launcher_port <TODO: LAUNCHER_PORT> \
             --agent_host 0.0.0.0 \
             --agent_port <TODO: AGENT_PORT> \
-            --backend https://localhost:9000 \
+            --backend https://nuggets.puppy9.com/api \
             --tool example_red_agent_tools.py \
             --mcp http://0.0.0.0:12345/sse/ \
             --model_type openrouter \
@@ -220,7 +220,7 @@ agentbeats run example_red_agent_card.toml \
             --launcher_port <TODO: LAUNCHER_PORT> \
             --agent_host 0.0.0.0 \
             --agent_port <TODO: AGENT_PORT> \
-            --backend https://localhost:9000 \
+            --backend https://nuggets.puppy9.com/api \
             --tool example_red_agent_tools.py \
             --mcp http://0.0.0.0:12345/sse/ \
             --model_type openai \
@@ -232,7 +232,7 @@ agentbeats run example_red_agent_card.toml \
             --launcher_port <TODO: LAUNCHER_PORT> \
             --agent_host 0.0.0.0 \
             --agent_port <TODO: AGENT_PORT> \
-            --backend https://localhost:9000 \
+            --backend https://nuggets.puppy9.com/api \
             --tool example_red_agent_tools.py \
             --mcp http://0.0.0.0:12345/sse/ \
             --model_type openrouter \
@@ -244,7 +244,7 @@ agentbeats run example_red_agent_card.toml \
             --launcher_port <TODO: LAUNCHER_PORT> \
             --agent_host 0.0.0.0 \
             --agent_port <TODO: AGENT_PORT> \
-            --backend https://localhost:9000 \
+            --backend https://nuggets.puppy9.com/api \
             --tool example_red_agent_tools.py \
             --mcp http://0.0.0.0:12345/sse/ \
             --model_type openrouter \
