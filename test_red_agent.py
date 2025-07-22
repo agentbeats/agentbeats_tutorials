@@ -77,7 +77,7 @@ class RedAgentTester:
                     role=Role.user,
                     parts=[Part(TextPart(text=query))],
                     messageId=uuid4().hex,
-                    taskId=uuid4().hex,
+                    taskId=None,
                 )
             )
             req = SendStreamingMessageRequest(id=str(uuid4()), params=params)
@@ -167,9 +167,12 @@ async def main(agent_url: str):
             print("SUMMARY:")
             print(f"Agent URL: {agent_url}")
             print(f"Agent Card Retrieved: {'✅' if result['agent_card'] else '❌'}")
-            print(
-                f"Attack Prompt Generated: {'✅' if result['injection_prompt'] else '❌'}"
-            )
+            if result['injection_prompt'] and not result['injection_prompt'].startswith("Error") and not result['injection_prompt'].startswith("No response"):
+                print("Injection Prompt Retrieved: ✅")
+                print(f"Prompt: {result['injection_prompt']}")
+            else:
+                print("Injection Prompt Retrieved: ❌")
+                print(f"Error: {result['injection_prompt']}")
 
     except Exception as e:
         print(f"Error during testing: {str(e)}")
