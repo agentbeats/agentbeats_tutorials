@@ -77,7 +77,7 @@ class RedAgentTester:
                     role=Role.user,
                     parts=[Part(TextPart(text=query))],
                     messageId=uuid4().hex,
-                    taskId=uuid4().hex,
+                    taskId=None,
                 )
             )
             req = SendStreamingMessageRequest(id=str(uuid4()), params=params)
