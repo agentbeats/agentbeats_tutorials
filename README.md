@@ -26,10 +26,11 @@ Just to mention, in [agentbeats](agentbeats.org), both prompts (defense / attack
 
 ## Stage I: Setting up a Minimal Red Agent
 
-First, clone our example repo:
+First, clone our example repo and enter this folder:
 
 ```bash
 git clone https://github.com/agentbeats/agentbeats_tutorials
+cd agentbeats_tutorials
 ```
 
 ### 1). Agent Server Deployment
@@ -56,22 +57,25 @@ Go to `example_red_agent_card.toml`. You should see the following fields that ne
 + `name`: provide your awsome agent name here!
 + `url`: fill in your AGENT_PORT here (not LAUNCHER_PORT!). This is the url where our platform access your agent.
 
-#### 4. Host Your Agent Server (TODO: provide Key)
+#### 4. Host Your Agent Server
 
 To host your agent, please fill in your LAUNCHER_PORT and AGENT_PORT here and run the following commands
 
 ```bash
 # Use our key to use all-platform agents (anthropic, openai, ...)
+# Will deliver this key on the meeting/slack!
 export OPENROUTER_API_KEY=sk...
 export OPENROUTER_BASE_URL="https://openrouter.ai/api/v1"
 
 # Run your agent
 agentbeats run example_red_agent_card.toml \
             --launcher_host 0.0.0.0 \
-            --launcher_port TODO: LAUNCHER_PORT \
+            --launcher_port <TODO: LAUNCHER_PORT> \
             --agent_host 0.0.0.0 \
-            --agent_port TODO: AGENT_PORT \
-            --backend "http://localhost:9000"
+            --agent_port <TODO: AGENT_PORT> \
+            --backend "https://localhost:9000" \
+            --model_type openrouter \
+            --model_name anthropic/claude-3.5-sonnet
 ```
 
 > For those interested in why there are two ports: We actually have two servers, the launcher server and the agent server. The first server is responsible for setting up game environments and reset when needed. The second is responsible for receiving agent messages and reply.
@@ -81,7 +85,7 @@ agentbeats run example_red_agent_card.toml \
 Use `test_red_agent.py` to test if your agent is running correctly. Fill in your AGENT_PORT here.
 
 ```bash
-python .\test_red_agent.py --agent_url="http://localhost:[TODO: AGENT_PORT]"
+python test_red_agent.py --agent_url="http://localhost:<TODO: AGENT_PORT>"
 ```
 
 You should see this if your agent runs successfully locally:
@@ -159,11 +163,13 @@ Then, you might restart your agent with the `--tool path/to/your/tool.py` argume
 ```bash
 agentbeats run example_red_agent_card.toml \
             --launcher_host 0.0.0.0 \
-            --launcher_port {TODO: LAUNCHER_PORT} \
+            --launcher_port <TODO: LAUNCHER_PORT> \
             --agent_host 0.0.0.0 \
-            --agent_port {TODO: AGENT_PORT} \
-            --backend http://localhost:9000 \
-            --tool example_red_agent_tools.py
+            --agent_port <TODO: AGENT_PORT> \
+            --backend https://localhost:9000 \
+            --tool example_red_agent_tools.py \
+            --model_type openrouter \
+            --model_name anthropic/claude-3.5-sonnet
 ```
 
 Similarly, you can also serve mcp servers for your agent using `--mcp https://path/to/your/mcp/server` argument. Example command:
@@ -173,12 +179,14 @@ python example_red_agent_mcp.py # serve the mcp at http://0.0.0.0:12345/sse/
 
 agentbeats run example_red_agent_card.toml \
             --launcher_host 0.0.0.0 \
-            --launcher_port {TODO: LAUNCHER_PORT} \
+            --launcher_port <TODO: LAUNCHER_PORT> \
             --agent_host 0.0.0.0 \
-            --agent_port {TODO: AGENT_PORT} \
-            --backend http://localhost:9000 \
+            --agent_port <TODO: AGENT_PORT> \
+            --backend https://localhost:9000 \
             --tool example_red_agent_tools.py \
-            --mcp http://0.0.0.0:12345/sse/
+            --mcp http://0.0.0.0:12345/sse/ \
+            --model_type openrouter \
+            --model_name anthropic/claude-3.5-sonnet
 ```
 
 ### 3. Try Different Models
@@ -189,10 +197,10 @@ If you need, you can also change your agent using `--model_type xxx`, `--model_n
 # example: use openai gpt-4o-mini
 agentbeats run example_red_agent_card.toml \
             --launcher_host 0.0.0.0 \
-            --launcher_port {TODO: LAUNCHER_PORT} \
+            --launcher_port <TODO: LAUNCHER_PORT> \
             --agent_host 0.0.0.0 \
-            --agent_port {TODO: AGENT_PORT} \
-            --backend http://localhost:9000 \
+            --agent_port <TODO: AGENT_PORT> \
+            --backend https://localhost:9000 \
             --tool example_red_agent_tools.py \
             --mcp http://0.0.0.0:12345/sse/ \
             --model_type openai \
@@ -201,14 +209,26 @@ agentbeats run example_red_agent_card.toml \
 # example 2: use openrouter anthropic/claude-3.5-sonnet
 agentbeats run example_red_agent_card.toml \
             --launcher_host 0.0.0.0 \
-            --launcher_port {TODO: LAUNCHER_PORT} \
+            --launcher_port <TODO: LAUNCHER_PORT> \
             --agent_host 0.0.0.0 \
-            --agent_port {TODO: AGENT_PORT} \
-            --backend http://localhost:9000 \
+            --agent_port <TODO: AGENT_PORT> \
+            --backend https://localhost:9000 \
             --tool example_red_agent_tools.py \
             --mcp http://0.0.0.0:12345/sse/ \
             --model_type openrouter \
             --model_name anthropic/claude-3.5-sonnet
+
+# example 3: use openrouter xai/grok-3-mini
+agentbeats run example_red_agent_card.toml \
+            --launcher_host 0.0.0.0 \
+            --launcher_port <TODO: LAUNCHER_PORT> \
+            --agent_host 0.0.0.0 \
+            --agent_port <TODO: AGENT_PORT> \
+            --backend https://localhost:9000 \
+            --tool example_red_agent_tools.py \
+            --mcp http://0.0.0.0:12345/sse/ \
+            --model_type openrouter \
+            --model_name x-ai/grok-3-mini \
 ```
 
 ### 4. Read the Official Attack Guide
